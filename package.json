@@ -1,0 +1,40 @@
+{
+  "name": "basic-web-template",
+  "version": "1.0.0",
+  "description": "Basic Node.js-powered website template with a build pipeline.",
+  "main": "dist/client/index.js",
+  "scripts": {
+    "start": "npm run server:run",
+    "build": "npm run client:build && npm run server:build && npm run public:build",
+    "clean": "rimraf dist",
+    "dev": "concurrently \"npm run server:build:watch\" \"npm run server:run:watch\" \"npm run client:build:watch\" \"npm run public:build:watch\"",
+    "client:build": "cross-env BABEL_ENV=development babel src/client -d dist/client",
+    "client:build:watch": "npm run client:build -- -w",
+    "server:run": "node -r source-map-support dist/server",
+    "server:run:watch": "nodemon -r source-map-support dist/server",
+    "server:build": "cross-env BABEL_ENV=server babel src/server -d dist/server",
+    "server:build:watch": "npm run server:build -- -w",
+    "public:build": "copyfiles \"public/**\" dist",
+    "public:build:watch": "nodemon --exec \"npm run public:build\" -w public -e *"
+  },
+  "author": "Christian Snodgrass",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.6.0",
+    "concurrently": "^4.1.2",
+    "copyfiles": "^2.1.1",
+    "cross-env": "^5.2.1",
+    "nodemon": "^1.19.2",
+    "rimraf": "^3.0.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "source-map-support": "^0.5.13"
+  },
+  "engines": {
+    "node": "12.7.0"
+  }
+}
